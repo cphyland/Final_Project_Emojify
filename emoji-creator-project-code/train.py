@@ -50,7 +50,9 @@ cv2.ocl.setUseOpenCL(False)
 emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 
 
-emotion_model.compile(loss='categorical_crossentropy',optimizer=Adam(lr=0.0001, decay=1e-6),metrics=['accuracy'])
+emotion_model.compile(loss='categorical_crossentropy',
+                      optimizer=Adam(lr=0.0001, decay=1e-6),
+                      metrics=['accuracy'])
 emotion_model_info = emotion_model.fit_generator(
         train_generator,
         steps_per_epoch=28709 // 64,
