@@ -63,13 +63,13 @@ def update():
 		test_sent = np.vstack([test_sent] * 5)
 		actual_output = request.form['dropdown_value']
 		output_hash = {
-			'Happy': np.array([1.,0.,0.,0.,0.,0.,0.]),
-			'Fear': np.array([0.,1.,0.,0.,0.,0.,0.]),
-			'Anger': np.array([0.,0.,1.,0.,0.,0.,0.]),
-			'Sadness': np.array([0.,0.,0.,1.,0.,0.,0.]),
-			'Disgust': np.array([0.,0.,0.,0.,1.,0.,0.]),
-			'Shame': np.array([0.,0.,0.,0.,0.,1.,0.]),
-			'Guilt': np.array([0.,0.,0.,0.,0.,0.,1.]),
+			'Angry': np.array([1.,0.,0.,0.,0.,0.,0.]),
+			'Discusted': np.array([0.,1.,0.,0.,0.,0.,0.]),
+			'Fearful': np.array([0.,0.,1.,0.,0.,0.,0.]),
+			'Happy': np.array([0.,0.,0.,1.,0.,0.,0.]),
+			'Neutral': np.array([0.,0.,0.,0.,1.,0.,0.]),
+			'Sad': np.array([0.,0.,0.,0.,0.,1.,0.]),
+			'Surprised': np.array([0.,0.,0.,0.,0.,0.,1.]),
 					}
 		actual_output = output_hash[actual_output].reshape((1,7))
 		actual_output = np.vstack([actual_output] * 5)
