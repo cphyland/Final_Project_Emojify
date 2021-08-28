@@ -3,7 +3,7 @@ body{
   padding: 0px;
   margin: 0px;
   background-image: linear-gradient(
-    to right, lightskyblue, dodgerblue, darkblue);
+    to bottom right, green, blue, purple);
 }
 
 /* set map, body, and html to 100% of the screen size */
