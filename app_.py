@@ -1,4 +1,6 @@
+import cv2
 from flask import Flask, render_template, redirect
+import numpy as np
 import os
 import sys
 import numpy as np
@@ -62,11 +64,10 @@ def index():
             print(repr(e))
 
         cap.release()
-    
+
     emotion_prediction(emotion_model)
     
-  return render_template("indexmer.html")
+    return render_template("indexmer.html")
 
 if __name__ == "__main__":
-	get_model()
 	app.run(host="0.0.0.0", port=5000,debug=True)
