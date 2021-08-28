@@ -5,16 +5,16 @@ import os
 import sys
 import numpy as np
 import tensorflow as tf
-from keras.models import Model
-from keras.models import load_model
+from tensorflow.keras.models import Model
+from tensorflow.keras.models import load_model
   
 # Flask Setup
 app = Flask(__name__)
 
-model_path = os.path.join('models','emotion_model_full.h5')
+model_path = os.path.join('static','models','emotion_model_full.h5')
 
 def load_model(model_path):
-    emotion_model = tf.keras.models.load_model(emotion_model_path)
+    emotion_model = tf.keras.models.load_model(model_path)
     
     return emotion_model
     
@@ -70,4 +70,4 @@ def index():
     return render_template("indexmer.html")
 
 if __name__ == "__main__":
-	app.run(host="0.0.0.0", port=5000,debug=True)
+	app.run(debug=True)
