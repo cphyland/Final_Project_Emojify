@@ -1,86 +1,71 @@
 from flask import Flask, render_template, redirect
-from sqlalchemy import create_engine
-import pandas as pd
-from flask import request
-from flask import jsonify
 import os
 import sys
 import numpy as np
 import tensorflow as tf
-import pickle
-import pdb
 from keras.models import Model
 from keras.models import load_model
-from keras.preprocessing.sequence import pad_sequences
-
-
-shark_api_url = "http://api.fish.wa.gov.au/webapi/v1/RawData"
-shark_table_name = "sharks1"
-shark_csv_path = "../data/sharks/sharks_cleaned.csv"
-
+  
 # Flask Setup
 app = Flask(__name__)
 
-def get_model():
-	global model
-	model = load_model('emoji_model.h5')
-	print('Model Loaded!!')
+model_path = os.path.join('models','emotion_model_full.h5')
 
-graph = tf.get_default_graph()
-
-tokenizer = pickle.load(open('tokenizer.pickle','rb'))
-
-
+def load_model(model_path):
+    emotion_model = tf.keras.models.load_model(emotion_model_path)
+    
+    return emotion_model
+    
+emotion_model = load_model(model_path) 
 # Flask Routes
 @app.route("/")
 def index():
-  return render_template("view.html")
+    
+    def emotion_prediction(emotion_model):
+        cv2.ocl.setUseOpenCL(False)
+        emotion_dict = {0: "Angry",
+                        1: "Disgusted",
+                        2: "Fearful",
+                        3: "Happy",
+                        4: "Neutral",
+                        5: "Sad",
+                        6: "Surprised"}
+        bounding_box_path = os.path.join('xml','haarcascade_frontalface_default.xml')
+        # start the webcam feed
+        try:
+            cap = cv2.VideoCapture(0)
+            while True:
+                # Use haar cascade to draw bounding box around face
+                ret, frame = cap.read()
+                if not ret:
+                    break
+                bounding_box = cv2.CascadeClassifier(bounding_box_path)
+                gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                num_faces = bounding_box.detectMultiScale(gray_frame,scaleFactor=1.3, minNeighbors=5)
 
-  @app.route('/predict',methods = ['POST'])
-def predict():
-	global graph
-	global tokenizer
-	with graph.as_default():
-		maxlen = 50
-		text = request.form['name']
-		test_sent = tokenizer.texts_to_sequences([text])
-		test_sent = pad_sequences(test_sent, maxlen = maxlen)
-		pred = model.predict(test_sent)
-		response = {
-		'prediction': int(np.argmax(pred))
-		}
-	return jsonify(response)
+                for (x, y, w, h) in num_faces:
+                    cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (255, 0, 0), 2)
+                    roi_gray_frame = gray_frame[y:y + h, x:x + w]
+                    cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray_frame, (48, 48)), -1), 0)
+                    emotion_prediction = emotion_model.predict(cropped_img)
+                    maxindex = int(np.argmax(emotion_prediction))
+                    cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+                    print(maxindex)
 
-    @app.route('/update',methods = ['POST'])
-def update():
-	global graph
-	global tokenizer
-	with graph.as_default():
-		maxlen = 50
-		text = request.form['sentence']
-		test_sent = tokenizer.texts_to_sequences([text])
-		test_sent = pad_sequences(test_sent, maxlen = maxlen)
-		test_sent = np.vstack([test_sent] * 5)
-		actual_output = request.form['dropdown_value']
-		output_hash = {
-			'Angry': np.array([1.,0.,0.,0.,0.,0.,0.]),
-			'Discusted': np.array([0.,1.,0.,0.,0.,0.,0.]),
-			'Fearful': np.array([0.,0.,1.,0.,0.,0.,0.]),
-			'Happy': np.array([0.,0.,0.,1.,0.,0.,0.]),
-			'Neutral': np.array([0.,0.,0.,0.,1.,0.,0.]),
-			'Sad': np.array([0.,0.,0.,0.,0.,1.,0.]),
-			'Surprised': np.array([0.,0.,0.,0.,0.,0.,1.]),
-					}
-		actual_output = output_hash[actual_output].reshape((1,7))
-		actual_output = np.vstack([actual_output] * 5)
-		model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-		model.fit(test_sent, actual_output, epochs = 10, batch_size = 32, shuffle=True)
-		model.save('emoji_model.h5')
-		get_model()
-		response = {
-		'update_text': 'Updated the values!! Should work in next few attempts..'
-		}
-	return redirect("/")
+                cv2.imshow('Video', cv2.resize(frame,(1200,860),interpolation = cv2.INTER_CUBIC))
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+
+        except (KeyboardInterrupt, Exception) as e:
+            cap.release()
+            cv2.destroyAllWindows()
+            print(repr(e))
+
+        cap.release()
+    
+    emotion_prediction(emotion_model)
+    
+  return render_template("indexmer.html")
 
 if __name__ == "__main__":
 	get_model()
