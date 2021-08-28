@@ -32,7 +32,7 @@ def index():
                         4: "Neutral",
                         5: "Sad",
                         6: "Surprised"}
-        bounding_box_path = os.path.join('xml','haarcascade_frontalface_default.xml')
+        bounding_box_path = os.path.join('static','xml','haarcascade_frontalface_default.xml')
         # start the webcam feed
         try:
             cap = cv2.VideoCapture(0)
