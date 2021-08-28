@@ -69,5 +69,7 @@ def index():
     
     return render_template("indexmer.html")
 
+    
+
 if __name__ == "__main__":
 	app.run(debug=True)
