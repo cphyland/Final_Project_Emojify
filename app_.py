@@ -22,6 +22,9 @@ emotion_model = load_model(model_path)
 # Flask Routes
 @app.route("/")
 def index():
+    return render_template("indexmer.html")
+@app.route("/camera")
+def camera():
     
     def emotion_prediction(emotion_model):
         cv2.ocl.setUseOpenCL(False)
@@ -67,7 +70,6 @@ def index():
 
     emotion_prediction(emotion_model)
     
-    return render_template("indexmer.html")
 
     
 
