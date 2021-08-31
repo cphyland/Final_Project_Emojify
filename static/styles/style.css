@@ -14,7 +14,7 @@ url("//db.onlinewebfonts.com/t/c16f494de2b352a69ead71431b29a155.svg#Kaleko205W00
 body{
   padding: 0px;
   margin: 0px;
-  background: linear-gradient(60deg, #3d3393 0%, #2b76b9 37%, #2cacd1 65%, #35eb93 100%);
+  background: linear-gradient(to top, #00c6fb 0%, #005bea 100%);
 }
 
 /* set map, body, and html to 100% of the screen size */
@@ -57,7 +57,7 @@ html {
 
 h1, h3, .navbar, .btn {
   font-family: 'Kaleko205W00-Book', sans-serif;
-  color: rgb(207, 36, 36);
+  color: rgb(36, 130, 207);
 }
 
 
