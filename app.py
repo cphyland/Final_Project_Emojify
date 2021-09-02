@@ -1,22 +1,12 @@
 import cv2
-import datetime
 from flask import Flask, render_template, Response, request
 import numpy as np
 import os
-import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import Model
-from tensorflow.keras.models import load_model
-import time
-from threading import Thread
 
-global capture,rec_frame, grey, switch, neg, face, rec, out 
-capture=0
-grey=0
-neg=0
+global switch, face
 face=0
 switch=1
-rec=0
 
 # Flask Setup
 app = Flask(__name__)
@@ -46,25 +36,25 @@ def emotion_prediction(frame):
         cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray_frame, (48, 48)), -1), 0)
         emotion_prediction = emotion_model.predict(cropped_img)
         maxindex = int(np.argmax(emotion_prediction))
-        cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.flip(cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA),1)
     
     return frame
 
 def gen_frames():  # generate frame by frame from camera
-    global out, capture,rec_frame
     while True:
-        success, frame = camera.read()
-        frame = cv2.flip(frame,1) 
+        success, reversed_frame = camera.read()
+        frame = cv2.flip(reversed_frame, 1)
         if success:
             if(face):                
-                frame= emotion_prediction(frame)
+                frame = emotion_prediction(frame)
             try:
-                success, buffer = cv2.imencode('.jpg', frame)
+                ret, buffer = cv2.imencode('.jpg', frame)
                 frame = buffer.tobytes()
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
             except Exception as e:
                 pass
+
         else:
             pass
 
@@ -85,50 +75,26 @@ def video_feed():
 def tasks():
     global switch,camera
     if request.method == 'POST':
-        if request.form.get('click') == 'Capture':
-            global capture
-            capture=1
-        elif  request.form.get('grey') == 'Grey':
-            global grey
-            grey=not grey
-        elif  request.form.get('neg') == 'Negative':
-            global neg
-            neg=not neg
-        elif  request.form.get('face') == 'Detect Emotion':
+        if  request.form.get('face') == 'Detect Emotion':
             global face
             face=not face 
             if(face):
-                time.sleep(4)   
+                pass
         elif  request.form.get('stop') == 'Stop/Start':
-            
             if(switch==1):
                 switch=0
                 camera.release()
                 cv2.destroyAllWindows()
-                
             else:
                 camera = cv2.VideoCapture(0)
                 switch=1
-        elif  request.form.get('rec') == 'Start/Stop Recording':
-            global rec, out
-            rec= not rec
-            if(rec):
-                now=datetime.datetime.now() 
-                fourcc = cv2.VideoWriter_fourcc(*'XVID')
-                out = cv2.VideoWriter('vid_{}.avi'.format(str(now).replace(":",'')), fourcc, 20.0, (640, 480))
-                #Start new thread for recording the video
-                thread = Thread(target = record, args=[out,])
-                thread.start()
-            elif(rec==False):
-                out.release()
-                          
-                 
+             
     elif request.method=='GET':
         return render_template('indexmer.html')
     return render_template('indexmer.html')  
    
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
 
 camera.release()
 cv2.destroyAllWindows()  
