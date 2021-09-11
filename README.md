@@ -1,4 +1,8 @@
 # Final_Project_Emojify
+Hello everyone!
+
+For our project we started off by googling machine learning and came across the idea of emotional facial recognition. We were able to find an existing repo that contained the starter code and data, we then added the component for the camera to be able to detect your emotion and create the bridge between the trained model and the camera. We utilized openCV and webRTC, and of course we used machine learning to train the model. We believe this is important because facial recognition can contribute data to several fields in today's age. The code relies on two machine learning algorithms, the HAAR cascade is used to isolate the users face, which is facilitated by opencv. The emotion prediction is made using a deep neural network, which is facilitated by tensorflow. Python flask ran the server, and heroku hosted our app. 
+
 cph presentation notes:
 
 Slide 9:
