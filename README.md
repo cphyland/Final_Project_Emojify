@@ -1,4 +1,4 @@
-# What Does Your Face Say About You?
+# What does your face say about you?
 Facial recognition is an increasingly important field in today's age. Use cases range from law enforcement and digital securtiy, to advertising and location trackings. This project demonstrates that it is possible to take off the shelf example code, and implement an effective application for face detection and emotion recognition. We utilized Python, Javascript, Tensorflow, openCV, webRTC, aiohttp, aiortc, and other libraries to accomplish our goal.
 
 The code relies on two machine different learning algorithms. The Haar cascade is used to isolate the user's face, which is facilitated by opencv. The emotion prediction is made using an implementation of the VGGNet convolutional neural network (CNN), which is facilitated by tensorflow. Python aiohttp is used to run the backend server, supported by aiortc and asyncio to handle the webRTC stream, and the final app is hosted on heroku. 
@@ -62,6 +62,10 @@ The model shows the best classification on the “happiness” and “surprise�
 - "Emojify - Create Your Own Emoji with Deep Learning." Dataflair, 14 Mar. 2021, data-flair.training/blogs/create-emoji-with-deep-learning/.
 
 - Nagm Hemanth. "Camera App with Flask and OpenCV." Medium, Towards Data Science, 30 May 2021, towardsdatascience.com/camera-app-with-flask-and-opencv-bd147f6c0eec
+
+
+### Data
+- Sambare, Manas. “FER-2013.” Kaggle, 19 July 2020, www.kaggle.com/msambare/fer2013. 
 
 ### Models
 - "Opencv." Github, github.com/opencv
