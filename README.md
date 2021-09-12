@@ -1,7 +1,6 @@
 # What does your face say about you?
 Facial recognition is an increasingly important field in today's age. Use cases range from law enforcement and digital securtiy, to advertising and location tracking. This project demonstrates that it is possible to take off the shelf example code, and implement an effective application for face detection and emotion recognition.
-###
-Tools Used:
+### Tools Used:
 Python, Javascript, Tensorflow, openCV, webRTC, aiohttp, aiortc, and others
 
 The code relies on two different machine learning algorithms. The Haar Cascade is used to isolate the user's face, which is facilitated by openCV. The emotion prediction is made using an implementation of the VGGNet convolutional neural network (CNN), which is facilitated by Tensorflow Lite. Python aiohttp is used to run the backend server, supported by aiortc and asyncio to handle the webRTC stream, and the final app is hosted on heroku. 
