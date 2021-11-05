@@ -1,5 +1,5 @@
 # What does your face say about you?
-Facial recognition is an increasingly important field in today's age. Use cases range from law enforcement and digital securtiy, to advertising and location tracking. This project demonstrates that it is possible to take off the shelf example code, and implement an effective application for face detection and emotion recognition.
+Facial recognition is an increasingly important field in today's age. Use cases range from law enforcement and digital securtiy, to advertising and location tracking. This project demonstrates that it is possible to take existing code bases, and implement an effective application for face detection and emotion recognition.
 
 ### Tools Used:
 Python, Javascript, Tensorflow, openCV, webRTC, aiohttp, aiortc, and others
@@ -10,7 +10,7 @@ The code relies on two different machine learning algorithms. The Haar Cascade i
 
 ## Communication Process
 
-The first thing that happens when app launches, is the client is told to request their public IP from a STUN server. This is done to  enable communication through NATs, giving the web server a valid return address for the media stream.  Once that is accomplished, the front end Javascript initiates a stream using webRTC. Tihs stream is sent to the web server, along with the public IP address as the return point. The back end server processes the stream, makes a prediction, and then returns that prediction to the client on top of the original video stream.
+The first thing that happens when app launches, is the client is told to request their public IP from a STUN server. This is done to  enable communication through NATs, giving the web server a valid return address for the media stream.  Once that is accomplished, the front end Javascript initiates a stream using webRTC. This stream is sent to the web server, along with the public IP address as the return point. The back end server processes the stream, makes a prediction, and then returns that prediction to the client on top of the original video stream.
 
 [<img src="https://github.com/cphyland/Final_Project_Emojify/blob/main/static/images/communication_process.png">](https://github.com/aiortc/aiortc/tree/main/examples/server)
 
@@ -52,7 +52,7 @@ The model shows the best classification on the “happiness” and “surprise�
 
 - "Elements Marketplace: Heroku-Buildpack-Apt." Heroku/Heroku-Buildpack-Apt - Buildpacks - Heroku Elements, elements.heroku.com/buidpacks/heroku/heroku-buildpack-apt.
 
-- Khaireddin, Yousif, and Shoufa Chen. "Facial Emotion Recognition: State of the Art Performance on FER2013." ArXiv.org, 8 May 2021, arxiv.org/abs/2105.03588v1.
+- Khaireddin, Yousif, and Zhoufa Chen. "Facial Emotion Recognition: State of the Art Performance on FER2013." ArXiv.org, 8 May 2021, arxiv.org/abs/2105.03588v1.
 
 - Mellouk, Wafa, and Wahida Handouzi. "Facial Emotion Recognition Using Deep Learning: Review and Insights." Procedia Computer Science, Elsevier, 6 Aug. 2020, sciencedirect.com/science/article/pii/S1877050920318019
 
